@@ -1,0 +1,45 @@
+.messagesContainer {
+    padding: 2rem 4rem;
+}
+
+.messagesList {
+    display: flex;
+    flex-direction: column;
+}
+
+.messageItem {
+    max-width: 50%;
+    padding: 1rem 0.5rem;
+}
+
+.myMessage {
+    align-self: start;
+    background-color: hsl(115, 62%, 45%);
+}
+
+.recievedMessage {
+    align-self: end;
+    background-color: hsl(300, 83%, 27%);
+}
+
+.messageInputContainer {
+    bottom: 2%;
+    display: flex;
+    gap: 2%;
+    justify-content: center;
+    left: 25%;
+    margin: 0 auto;
+    position: absolute;
+    width: 50%;
+}
+
+.messageInputField {
+    padding: 0.5rem;
+    width: 50%;
+}
+
+.sendMessageButton {
+    background-color: transparent;
+    border: 1px solid hsl(214, 72%, 45%);
+    color: hsl(214, 90%, 62%);
+}

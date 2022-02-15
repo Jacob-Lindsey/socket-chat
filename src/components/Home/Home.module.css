@@ -1,0 +1,15 @@
+.container {
+    padding-top: 1rem;
+}
+
+.enterRoomButton {
+    border: 1px solid hsl(212, 81%, 61%);
+    color: hsl(212, 81%, 61%);
+    padding: 1rem 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.enterRoomButton:hover {
+    background-color: hsla(212, 81%, 61%, 0.192);
+}
