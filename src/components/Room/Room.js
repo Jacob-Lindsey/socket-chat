@@ -39,7 +39,11 @@ const Room = (props) => {
                             <p className={styles.messageText}>
                                 {message.body}
                             </p>
-                            <small className={styles.messageSender}>{message.senderId}</small>
+                            <span className={styles.messageDetails}>
+                                <small className={styles.messageSender}>{message.senderId}</small>
+                                <small className={styles.messageTimestamp}>{message.timestamp}</small>
+                            </span>
+                            
                         </li>
                     ))}
                 </ol>
