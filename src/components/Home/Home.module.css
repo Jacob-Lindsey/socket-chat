@@ -2,14 +2,42 @@
     padding-top: 1rem;
 }
 
+.roomNameInput {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem 0 1rem;
+}
+
+.inputField {
+    background-color: hsl(30, 10%, 11%);
+    border: 1px solid hsla(15, 10%, 92%, 0.178);
+    border-radius: 0.3em;
+    color: hsl(15, 10%, 92%);
+    font-weight: 300;
+    padding: 0.5rem;
+}
+
 .enterRoomButton {
     border: 1px solid hsl(212, 81%, 61%);
+    border-radius: 0.3em;
     color: hsl(212, 81%, 61%);
-    padding: 1rem 0.5rem;
+    padding: 0.75rem;
     text-decoration: none;
     transition: all 0.2s ease;
 }
 
 .enterRoomButton:hover {
     background-color: hsla(212, 81%, 61%, 0.192);
+}
+
+@media screen and (min-width: 768px) {
+    .roomNameInput {
+        gap: 1rem;
+        justify-content: flex-start;
+        padding: 0.5rem 1rem 0 1rem;
+    }
+    
+    .enterRoomButton {
+        padding: 0.5rem;
+    }
 }
