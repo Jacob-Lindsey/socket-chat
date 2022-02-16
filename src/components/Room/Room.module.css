@@ -1,20 +1,29 @@
+.roomContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .messagesContainer {
-    padding: 2rem 4rem;
+    padding: 2rem 1rem;
 }
 
 .messagesList {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
 }
 
 .messageItem {
-    max-width: 50%;
-    padding: 1rem 0.5rem;
+    border-radius: 0.3em;
+    max-width: 40%;
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
 }
 
 .myMessage {
     align-self: start;
     background-color: hsl(115, 62%, 45%);
+    color: #222;
 }
 
 .recievedMessage {
@@ -22,24 +31,75 @@
     background-color: hsl(300, 83%, 27%);
 }
 
+.messageText {
+    margin: 0 0 12px 0;
+}
+
+.messageSender {
+
+}
+
+.myMessage .messageSender {
+    font-weight: 800;
+}
+
+.recievedMessage .messageSender {
+    font-weight: 800;
+}
+
+.footer {
+    background-color: hsl(30, 10%, 11%);
+    bottom: 0;
+    opacity: 0.97;
+    padding: 0.75rem;
+    position: fixed;
+    width: 100%;
+}
+
 .messageInputContainer {
-    bottom: 2%;
-    display: flex;
-    gap: 2%;
-    justify-content: center;
-    left: 25%;
-    margin: 0 auto;
-    position: absolute;
-    width: 50%;
+    display: inline-flex;
+    position: relative;
+    width: 75%;
 }
 
 .messageInputField {
-    padding: 0.5rem;
-    width: 50%;
+    background-color: hsl(30, 10%, 11%);
+    border: 1px solid hsla(15, 10%, 92%, 0.178);
+    border-radius: 0.3em;
+    color: hsl(15, 10%, 92%);
+    padding: 0.5rem 4.5rem 0.5rem 0.5rem;
+    width: 100%;
 }
 
 .sendMessageButton {
+    align-items: center;
     background-color: transparent;
-    border: 1px solid hsl(214, 72%, 45%);
+    border: 0;
     color: hsl(214, 90%, 62%);
+    cursor: pointer;
+    display: flex;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    transition: color 0.2s ease;
+}
+
+.sendMessageButton:hover {
+    color: hsl(204, 97%, 69%);
+}
+
+@media screen and (min-width: 768px) {
+    .messagesContainer {
+        padding: 2rem 4rem 0 4rem;
+    }
+
+    .messageInputContainer {
+        width: 100%;
+    }
+    
+    .messageInputField {
+        width: 100%;
+    }
+    
 }
