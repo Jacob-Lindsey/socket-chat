@@ -35,7 +35,7 @@ const Room = (props) => {
 
     return (
         <main className={styles.roomContainer}>
-            <h1 className={styles.roomName}># {roomId}</h1>
+            <h1 className={styles.roomName}><span className={styles.hashMark}>#</span> {roomId}</h1>
             <section className={styles.messagesContainer}>
                 <ol className={styles.messagesList}>
                     {messages.map((message, index) => (

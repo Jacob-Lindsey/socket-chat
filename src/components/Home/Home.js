@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { createRoom } from "../../utils/Rooms";
+import createRandomRoomName from "../../utils/createRandomRoomName";
 import createRandomUsername from "../../utils/createRandomUsername";
 import styles from "./Home.module.css";
 
@@ -21,7 +23,7 @@ const Home = () => {
     const handleEnterKeySubmit = (e) => {
         if (e.key === 'Enter' && roomName !== '') {
             let usernameToSend = username !== '' ? username : createRandomUsername();
-            navigate(`/${roomName}`, {state: { username: usernameToSend }});
+            navigate(`/${roomName !== '' ? roomName : createRandomRoomName()}`, {state: { username: usernameToSend }});
         }
     };
 
@@ -44,7 +46,7 @@ const Home = () => {
                     onKeyPress={handleEnterKeySubmit}
                     className={styles.inputField}
                 />
-                <Link to={`/${roomName}`} state={{ username: username !== '' ? username : createRandomUsername() }} className={styles.enterRoomButton}>
+                <Link to={`/${roomName !== '' ? roomName : createRandomRoomName()}`} state={{ username: username !== '' ? username : createRandomUsername() }} className={styles.enterRoomButton}>
                     Join room
                 </Link>
             </section>
