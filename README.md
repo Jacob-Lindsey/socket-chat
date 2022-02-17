@@ -2,7 +2,7 @@
 
 ## Features to be implemented
 
-- [ ] Allow room-specific username to be set
+- [x] Allow room-specific username to be set
 - [ ] Allow custom room names to be set, otherwise it should be auto-generated
 - [ ] Allow the room's creator/admins to require a password to be required to enter the room
 - [ ] Allow the room's creator/admins to enable chat persistence, otherwise it will only exist on a session-basis

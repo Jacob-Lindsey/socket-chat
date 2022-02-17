@@ -11,6 +11,7 @@ const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
 io.on("connection", (socket) => {
 
     const { roomId } = socket.handshake.query;
+
     socket.join(roomId);
 
     socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {

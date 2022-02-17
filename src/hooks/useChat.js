@@ -30,8 +30,9 @@ const useChat = (roomId) => {
         const timestamp = new Date(Date.now()).toLocaleTimeString("en-US");
 
         socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
-            body: messageBody,
+            body: messageBody.text,
             senderId: socketRef.current.id,
+            username: messageBody.user,
             timestamp: timestamp,
         });
     };

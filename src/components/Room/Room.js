@@ -1,22 +1,28 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { AiOutlineSend } from "react-icons/ai";
 import useChat from "../../hooks/useChat";
 import styles from "./Room.module.css";
 
 const Room = (props) => {
-
+    
     const { roomId  } = useParams();
-    const {  messages, sendMessage } = useChat(roomId);
-    const [newMessage, setNewMessage] = useState('');
+    const location = useLocation();
+    const state = location.state;
+    const INITIAL_MESSAGE = {text: "", user: state.username};
+    const { messages, sendMessage } = useChat(roomId);
+    const [newMessage, setNewMessage] = useState(INITIAL_MESSAGE);
+
 
     const handleNewMessageChange = (e) => {
-        setNewMessage(e.target.value);
+        let updatedMessage = {...newMessage};
+        updatedMessage.text = e.target.value;
+        setNewMessage(updatedMessage);
     };
 
     const handleSendMessage = () => {
         sendMessage(newMessage);
-        setNewMessage('');
+        setNewMessage(INITIAL_MESSAGE);
     };
 
     const handleEnterKeySubmit = (e) => {
@@ -40,7 +46,7 @@ const Room = (props) => {
                                 {message.body}
                             </p>
                             <span className={styles.messageDetails}>
-                                <small className={styles.messageSender}>{message.senderId}</small>
+                                <small className={styles.messageSender}>{message.username}</small>
                                 <small className={styles.messageTimestamp}>{message.timestamp}</small>
                             </span>
                             
@@ -52,7 +58,7 @@ const Room = (props) => {
                 <div className={styles.messageInputContainer}>
                     <input
                         type="text"
-                        value={newMessage}
+                        value={newMessage.text}
                         onChange={handleNewMessageChange}
                         onKeyDown={(e) => handleEnterKeySubmit(e)}
                         placeholder="Write message..."

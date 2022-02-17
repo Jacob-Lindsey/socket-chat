@@ -46,6 +46,7 @@
 
 .messageDetails {
     display: flex;
+    gap: 1rem;
     justify-content: space-between;
     width: 100%;
 }
@@ -115,7 +116,7 @@
     .messagesContainer {
         padding: 2rem 4rem 0 4rem;
     }
-
+    
     .messageInputContainer {
         width: 100%;
     }
