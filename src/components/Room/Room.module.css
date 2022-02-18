@@ -3,7 +3,7 @@
     box-shadow: 0px 2px 8px 6px hsla(30, 13%, 6%, 0.5);
     display: flex;
     justify-content: flex-start;
-    padding: 1rem;
+    padding: 1rem 0 1rem 1rem;
     position: fixed;
     top: 0;
     width: 100%;
@@ -18,11 +18,20 @@
 
 .roomName {
     display: flex;
-    font-size: 1.75rem;
+    font-size: 0.9rem;
     justify-content: space-between;
     margin: 0;
-    padding: 0 1.5rem 0 3rem;
+    padding: 0 0.75rem 0 1rem;
     width: 100%;
+}
+
+.roomName div {
+    align-items: center;
+    display: flex;
+}
+
+.roomName svg {
+    font-size: 1rem !important;
 }
 
 .hashMark {
@@ -32,12 +41,12 @@
 .username {
     align-items: center;
     display: flex;
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 400;
 }
 
 .username svg {
-    margin: 0 0.3rem 0 3rem;
+    margin-right: 0.3rem;
 }
 
 .messagesContainer {
@@ -149,6 +158,23 @@
 }
 
 @media screen and (min-width: 768px) {
+    .header{
+        padding: 1rem;
+    }
+
+    .roomName {
+        font-size: 1.75rem;
+        padding: 0 1.5rem 0 3rem;
+    }
+    
+    .roomName svg {
+        font-size: inherit !important;
+    }
+
+    .username {
+        font-size: 1rem;
+    }
+
     .messagesContainer {
         padding: 4rem 4rem 2rem 4rem;
     }
