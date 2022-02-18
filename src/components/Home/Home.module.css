@@ -1,12 +1,12 @@
 .container {
-    padding-top: 1rem;
+    padding-top: 5rem;
 }
 
 .roomNameInput {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 0.5rem 1rem 0 1rem;
+    padding: 0.5rem 3rem 0 3rem;
 }
 
 .inputField {
@@ -36,7 +36,6 @@
         flex-direction: row;
         gap: 1rem;
         justify-content: flex-start;
-        padding: 0.5rem 1rem 0 1rem;
     }
 
     .inputField, .enterRoomButton {
