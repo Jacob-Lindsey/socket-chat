@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
-const SOCKET_SERVER_URL = "http://localhost:4000";
+/* const SOCKET_SERVER_URL = process.env.NODE_ENV === 'production' ? "https://ssockchat.herokuapp.com/" : "http://localhost:4000"; */
+const SOCKET_SERVER_URL = socketIOClient.io(window.location.origin);
 
 const useChat = (roomId) => {
     const [messages, setMessages] = useState([]);
