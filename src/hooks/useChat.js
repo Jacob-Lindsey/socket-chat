@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
+import { uuid } from "uuidv4";
 
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
-const SOCKET_SERVER_URL = window.location.hostname;
+
+// PRODUCTION URL
+/* const SOCKET_SERVER_URL = window.location.hostname; */
+
+// DEVELOPMENT URL
+const SOCKET_SERVER_URL = "http://localhost:4000";
 
 const useChat = (roomId) => {
     const [messages, setMessages] = useState([]);
@@ -32,7 +38,8 @@ const useChat = (roomId) => {
         socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
             body: messageBody.text,
             userID: socketRef.current.id,
-            username: messageBody.user,
+            user: messageBody.user,
+            room: messageBody.room,
             timestamp: timestamp,
         });
     };

@@ -12,9 +12,12 @@ const Room = (props) => {
     const { roomId  } = useParams();
     const location = useLocation();
     const state = location.state;
-    const INITIAL_MESSAGE = {text: "", user: state.username};
+    const hasPassword = state.hasPassword;
+    const [isPersistent, setIsPersistent] = useState(state.isPersistent);
+    const INITIAL_MESSAGE = {text: "", user: state.username, room: roomId, isPersistent: isPersistent};
     const { messages, sendMessage } = useChat(roomId);
     const [newMessage, setNewMessage] = useState(INITIAL_MESSAGE);
+    
 
     const navigate = useNavigate();
 
@@ -29,6 +32,9 @@ const Room = (props) => {
     };
 
     const handleSendMessage = () => {
+        if (newMessage.text === "") {
+            return;
+        }
         sendMessage(newMessage);
         setNewMessage(INITIAL_MESSAGE);
     };
@@ -53,10 +59,16 @@ const Room = (props) => {
                     <div>
                         <span className={styles.hashMark}>#</span>
                         {roomId}
-                        <HiLockClosed 
-                            style={{ color: "hsla(137, 100%, 39%, 1)",  fontSize: "1.3rem", margin: "0 0.5rem" }}
-                            aria-label="Room Is Password Protected"
-                        />
+                        {
+                            hasPassword ?
+                                <HiLockClosed 
+                                    style={{ color: "hsla(137, 100%, 39%, 1)",  fontSize: "1.3rem", margin: "0 0.5rem" }}
+                                    aria-label="Room Is Password Protected"
+                                />
+                            :
+                            null
+                        }
+                        
                     </div>
                     <small className={styles.username}>
                         <BsPersonBadge style={{ fontSize: "0.8rem" }} />
@@ -88,6 +100,7 @@ const Room = (props) => {
                     <input
                         type="text"
                         value={newMessage.text}
+                        name="chatInput"
                         onChange={handleNewMessageChange}
                         onKeyDown={(e) => handleEnterKeySubmit(e)}
                         placeholder="Write message..."

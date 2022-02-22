@@ -9,6 +9,8 @@ const Home = () => {
 
     const [roomName, setRoomName] = useState('');
     const [username, setUsername] = useState('');
+    const [hasPassword, setHasPassword] = useState(false);
+    const [isPersistent, setIsPersistent] = useState(true);
 
     let navigate = useNavigate();
 
@@ -20,10 +22,22 @@ const Home = () => {
         setUsername(e.target.value);
     };
 
+    const handleEnablePasswordChange = () => {
+        setHasPassword(!hasPassword);
+    };
+
     const handleEnterKeySubmit = (e) => {
         if (e.key === 'Enter' && roomName !== '') {
             let usernameToSend = username !== '' ? username : createRandomUsername();
-            navigate(`/${roomName !== '' ? roomName : createRandomRoomName()}`, {state: { username: usernameToSend }});
+            navigate(
+                `/${roomName !== '' ? roomName : createRandomRoomName()}`,
+                {state:
+                    { 
+                        username: usernameToSend,
+                        hasPassword: hasPassword,
+                        isPersistent: isPersistent,
+                    }
+            });
         }
     };
 
@@ -50,6 +64,31 @@ const Home = () => {
                     Join room
                 </Link>
             </section>
+            <div className={styles.options}>
+                <label className={styles.passwordLabel}>
+                    <input 
+                        type="checkbox"
+                        name="hasPassword" 
+                        value="Require Password?"
+                        onChange={handleEnablePasswordChange}
+                        className={styles.passwordCheckbox}
+                    />
+                    Require Password?
+                </label>
+                { hasPassword ? 
+                    <input 
+                        type="password"
+                        name="password"
+                        placeholder="Room password"
+                        className={styles.inputField}
+                    />
+                    :
+                    null
+                }
+            </div>
+                
+
+            
         </main>
     );
 
