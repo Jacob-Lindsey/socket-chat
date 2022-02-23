@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { createRoom } from "../../utils/Rooms";
 import createRandomRoomName from "../../utils/createRandomRoomName";
 import createRandomUsername from "../../utils/createRandomUsername";
@@ -11,6 +12,7 @@ const Home = () => {
     const [username, setUsername] = useState('');
     const [hasPassword, setHasPassword] = useState(false);
     const [isPersistent, setIsPersistent] = useState(true);
+    const [password, setPassword] = useState(null);
 
     let navigate = useNavigate();
 
@@ -26,6 +28,14 @@ const Home = () => {
         setHasPassword(!hasPassword);
     };
 
+    const handlePasswordChange = (e) => {
+        if (e.target.value === "") {
+            setPassword(null);
+        } else {
+            setPassword(e.target.value);   
+        }
+    };
+
     const handleEnterKeySubmit = (e) => {
         if (e.key === 'Enter' && roomName !== '') {
             let usernameToSend = username !== '' ? username : createRandomUsername();
@@ -35,6 +45,7 @@ const Home = () => {
                     { 
                         username: usernameToSend,
                         hasPassword: hasPassword,
+                        password: password,
                         isPersistent: isPersistent,
                     }
             });
@@ -60,7 +71,16 @@ const Home = () => {
                     onKeyPress={handleEnterKeySubmit}
                     className={styles.inputField}
                 />
-                <Link to={`/${roomName !== '' ? roomName : createRandomRoomName()}`} state={{ username: username !== '' ? username : createRandomUsername() }} className={styles.enterRoomButton}>
+                <Link 
+                    to={`/${roomName !== '' ? roomName : createRandomRoomName()}`} 
+                    state={{ 
+                        username: username !== '' ? username : createRandomUsername(),
+                        hasPassword: hasPassword,
+                        password: password,
+                        isPersistent: isPersistent,
+                    }} 
+                    className={styles.enterRoomButton}
+                >
                     Join room
                 </Link>
             </section>
@@ -80,6 +100,7 @@ const Home = () => {
                         type="password"
                         name="password"
                         placeholder="Room password"
+                        onChange={handlePasswordChange}
                         className={styles.inputField}
                     />
                     :

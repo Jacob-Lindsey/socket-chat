@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AiOutlineSend } from "react-icons/ai";
 import { BsPersonBadge } from "react-icons/bs";
@@ -17,7 +17,31 @@ const Room = (props) => {
     const INITIAL_MESSAGE = {text: "", user: state.username, room: roomId, isPersistent: isPersistent};
     const { messages, sendMessage } = useChat(roomId);
     const [newMessage, setNewMessage] = useState(INITIAL_MESSAGE);
-    
+
+    useEffect(() => {
+
+        let obj = {
+            room: roomId, 
+            user: state.username, 
+            hasPassword: state.hasPassword, 
+            password: state.password,
+        };
+
+        let data = JSON.stringify(obj);
+
+        fetch(`http://localhost:4000/${roomId}`, { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: data
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log('Success', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
 
     const navigate = useNavigate();
 
