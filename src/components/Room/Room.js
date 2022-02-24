@@ -5,6 +5,8 @@ import { BsPersonBadge } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 import { MdNavigateBefore } from 'react-icons/md';
 import useChat from "../../hooks/useChat";
+import createOrUpdateRoom from "../../utils/createOrUpdateRoom";
+import addMessageToDB from "../../utils/addMessageToDB";
 import styles from "./Room.module.css";
 
 const Room = (props) => {
@@ -14,19 +16,22 @@ const Room = (props) => {
     const state = location.state;
     const hasPassword = state.hasPassword;
     const [isPersistent, setIsPersistent] = useState(state.isPersistent);
-    const INITIAL_MESSAGE = {text: "", user: state.username, room: roomId, isPersistent: isPersistent};
+    const INITIAL_MESSAGE = {
+        text: "", 
+        user: state.username, 
+        room: roomId, 
+        isPersistent: isPersistent,
+    };
     const { messages, sendMessage } = useChat(roomId);
     const [newMessage, setNewMessage] = useState(INITIAL_MESSAGE);
 
     useEffect(() => {
-
         let obj = {
             room: roomId, 
             user: state.username, 
             hasPassword: state.hasPassword, 
             password: state.password,
         };
-
         let data = JSON.stringify(obj);
 
         fetch(`http://localhost:4000/${roomId}`, { 
@@ -35,9 +40,6 @@ const Room = (props) => {
             body: data
         })
         .then(res => res.json())
-        .then(data => {
-            console.log('Success', data);
-        })
         .catch((error) => {
             console.error('Error:', error);
         });
@@ -59,6 +61,10 @@ const Room = (props) => {
         if (newMessage.text === "") {
             return;
         }
+        /* let messageToSend = newMessage;
+        messageToSend.timestamp = new Date(Date.now()).toLocaleTimeString("en-US");
+        let data = JSON.stringify(messageToSend); */
+        /* addMessageToDB(roomId, data); */
         sendMessage(newMessage);
         setNewMessage(INITIAL_MESSAGE);
     };

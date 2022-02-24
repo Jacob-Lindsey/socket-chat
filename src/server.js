@@ -62,18 +62,17 @@ process.env.DEBUG="*";
 }); */
 
 
-
-app.get('/:roomId', async (req, res) => {
+// Fetches all messages for current room
+/* app.get('/:roomId', async (req, res) => {
     console.log('GET route called');
     const messages = await Message.find()
         .sort({ timestamp: -1 })
         .limit(50);
     return res.json({ messages: messages });
-});
+}); */
 
-app.post('/:roomId', async (req, res) => {
-    console.log('POST route called');
-
+// Adds the current room to the database if it doesn't exist.
+/* app.post('/:roomId', async (req, res) => {
     const roomId = req.body.room;
     const user = req.body.user;
     const hasPassword = req.body.hasPassword;
@@ -95,11 +94,8 @@ app.post('/:roomId', async (req, res) => {
 
         // Save room to database
         await room.save();
-    } else {
-        existingRoom.users.push(user);
-        console.log(existingRoom.users);
     }
-});
+}); */
 
 app.get('/', (req, res, next) => res.sendFile(__dirname + './index.hmtl'));
 
@@ -111,24 +107,11 @@ io.on("connection", (socket) => {
     
     socket.join(roomId);
 
+    socket.to(roomId).emit("Someone new has joined the room.");
+
     socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
         io.in(roomId).emit(NEW_CHAT_MESSAGE_EVENT, data);
-        console.log(data.body);
-        console.log(data.userID);
-        console.log(data.user);
-        console.log(data.timestamp);
     });
-
-    /* socket.on('msg', async msg => {
-        const messageList = await Message.find()
-            .sort({ timestamp: -1 })
-            .limit(50);
-        io.in(roomId).emit('msg', { messages: messageList });
-
-        const message = new Message({
-            body: msg.
-        });
-    }) */
 
     socket.on("disconnect", () => {
         socket.leave(roomId);
