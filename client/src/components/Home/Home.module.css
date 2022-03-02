@@ -1,0 +1,80 @@
+.container {
+    padding-top: 5rem;
+}
+
+.sectionHeader {
+    color: hsl(15, 10%, 92%);
+}
+
+.roomNameInput {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: space-between;
+    padding: 0.5rem 3rem 0 3rem;
+}
+
+.inputField {
+    background-color: hsl(30, 10%, 11%);
+    border: 1px solid hsla(15, 10%, 92%, 0.178);
+    border-radius: 0.3em;
+    color: hsl(15, 10%, 92%);
+    font-weight: 300;
+    padding: 1rem;
+}
+
+
+.enterRoomButton {
+    background-color: transparent;
+    border: 1px solid hsl(212, 81%, 61%);
+    border-radius: 0.3em;
+    color: hsl(212, 81%, 61%);
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.enterRoomButton:hover {
+    background-color: hsla(212, 81%, 61%, 0.192);
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem 3rem 2rem 3rem;
+}
+
+.passwordLabel {
+    display: flex;
+    gap: 0.5rem;
+}
+
+@media screen and (min-width: 768px) {
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .roomNameInput {
+        flex-direction: row;
+        gap: 1rem;
+        justify-content: flex-start;
+    }
+
+    .inputField, .enterRoomButton {
+        padding: 0.5rem
+    }
+
+    .enterRoomButton {
+        margin-top: 0;
+    }
+
+    .options {
+        align-items: center;
+        flex-direction: row;
+        gap: 1.4rem;
+        padding: 0;
+    }
+}

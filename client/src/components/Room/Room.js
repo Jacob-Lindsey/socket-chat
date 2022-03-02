@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import io from "socket.io-client";
 import { AiOutlineSend } from "react-icons/ai";
 import { BsPersonBadge } from "react-icons/bs";
@@ -9,13 +9,21 @@ import styles from "./Room.module.css";
 
 let socket;
 
-const Room = () => {
+const Room = (props) => {
+  const location = useLocation();
+  const state = location.state;
+  const hasPassword = state.hasPassword;
+
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
 
+  const messagesEndRef = useRef(null);
+
   const [searchParams] = useSearchParams();
+  
+  /* const password = location.state.hasPassword ? location.state.password : null; */
 
   // DEVELOPMENT URL
   const ENDPOINT = "http://localhost:5000";
@@ -56,10 +64,19 @@ const Room = () => {
     });
   }, []);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const navigate = useNavigate();
 
   const handleNavigate = () => {
     navigate(-1)
+  };
+
+  // Uses a 'dummy' div at the bottom of the viewport to scroll to on page load, or when a new message is recieved
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSubmit = (e) => {
@@ -88,7 +105,7 @@ const Room = () => {
                     <div>
                         <span className={styles.hashMark}>#</span>
                         {room}
-                        {/* {
+                        {
                             hasPassword ?
                                 <HiLockClosed 
                                     style={{ color: "hsla(137, 100%, 39%, 1)",  fontSize: "1.3rem", margin: "0 0.5rem" }}
@@ -96,8 +113,7 @@ const Room = () => {
                                 />
                             :
                             null
-                        } */}
-                        
+                        }
                     </div>
                     <small className={styles.username}>
                         <BsPersonBadge style={{ fontSize: "0.8rem" }} />
@@ -129,6 +145,7 @@ const Room = () => {
                             
                         </li>
                     ))}
+                    <div className={styles.messagesEnd} ref={messagesEndRef} />
                 </ol>
             </section>
             <footer aria-label="Chat Room Input" className={styles.footer}>

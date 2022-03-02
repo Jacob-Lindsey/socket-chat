@@ -60,6 +60,8 @@ app.get('/chat', async (req, res, next) => {
           name: room,
           messages: [],
           users: [name],
+          hasPassword: false,
+          password: null,
           creator: name,
           admins: [name],
           mods: [name],
