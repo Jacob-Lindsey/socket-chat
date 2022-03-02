@@ -1,29 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import io from "socket.io-client";
 import { AiOutlineSend } from "react-icons/ai";
 import { BsPersonBadge } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
+import { IoClose } from "react-icons/io5";
 import { MdNavigateBefore } from 'react-icons/md';
 import styles from "./Room.module.css";
 
 let socket;
 
-const Room = (props) => {
-  const location = useLocation();
-  const state = location.state;
-  const hasPassword = state.hasPassword;
-
+const Room = () => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [hasPassword, setHasPassword] = useState(false);
+  const [password, setPassword] = useState(null);
 
   const messagesEndRef = useRef(null);
 
   const [searchParams] = useSearchParams();
-  
-  /* const password = location.state.hasPassword ? location.state.password : null; */
 
   // DEVELOPMENT URL
   const ENDPOINT = "http://localhost:5000";
@@ -115,12 +113,36 @@ const Room = (props) => {
                             null
                         }
                     </div>
-                    <small className={styles.username}>
+                    <small 
+                      className={styles.username}
+                      onClick={() => setMenuOpen(!menuOpen)}
+                    >
                         <BsPersonBadge style={{ fontSize: "0.8rem" }} />
                         {name}
                     </small>
                 </h1>
             </header>
+
+            {
+              menuOpen ?
+                <section className={styles.menuContainer}>
+                  <IoClose 
+                    className={styles.menuClose}
+                    aria-label="Close Menu"
+                    onClick={() => setMenuOpen(false)}
+                  />
+                  ROOM SETTINGS
+                  <input
+                      type="text"
+                      onChange={(e) => setPassword(e.target.value)}
+                      name="password"
+                      placeholder="Set Password"
+                      className={styles.settingsInputField}
+                  />
+                </section>
+                :
+                null
+            }
             
             <section className={styles.messagesContainer}>
                 <ol className={styles.messagesList}>
