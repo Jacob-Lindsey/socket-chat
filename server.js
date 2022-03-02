@@ -16,7 +16,7 @@ const io = require("socket.io")(server, {
     credentials: true,
   },
 });
-const { addUser, removeUser } = require("./user");
+const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
 const res = require("express/lib/response");
 
 const DB_STRING = "mongodb+srv://pantzzzz:jakejake@cluster0.bjfcc.mongodb.net/ssockchat?retryWrites=true&w=majority";
@@ -79,45 +79,57 @@ app.get('/chat', async (req, res, next) => {
 });
 
 io.on("connection", (socket) => {
-  socket.on("join", ({ name, room }, callBack) => {
+  
+  // When a user joins a room
+  socket.on("join", ({ name, room }) => {
     const { user, error } = addUser({ id: socket.id, name, room });
-    if (error) return callBack(error);
+
+    if (error) return callback(error);
 
     socket.join(user.room);
+
     socket.emit("message", {
       user: "Admin",
       text: `Welcome to ${user.room}`,
     });
 
-    socket.broadcast
-      .to(user.room)
-      .emit("message", { user: "Admin", text: `${user.name} has joined!` });
-    callBack(null);
+    socket.broadcast.to(user.room).emit("message", { user: "Admin", text: `${user.name} has joined!` });
 
+    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+    
+    // When a user sends a new message
     socket.on("sendMessage", ({ message }) => {
+  
       const timestamp = new Date(Date.now()).toLocaleTimeString("en-US");
-
+  
       const newMessage = {
         user: user.name,
         text: message,
         timestamp: timestamp,
       };
-
+  
       Room.findOne({ name: room })
         .then(foundRoom => {
           foundRoom.messages.push(newMessage);
           foundRoom.save();
         });      
-
+  
       io.to(user.room).emit("message", newMessage );
     });
   });
+
+  // When a user leaves a room
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
+    
     if (user) {
       io.to(user.room).emit("message", {
         user: "Admin",
         text: `${user.name} left the room`,
+      });
+      io.to(user.room).emit("roomData", {
+        room: user.room,
+        users: getUsersInRoom(user.room)
       });
     }
     console.log("A disconnection has been made");

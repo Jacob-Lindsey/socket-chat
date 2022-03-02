@@ -1,6 +1,6 @@
 let users = [];
 
-exports.addUser = ({ id, name, room }) => {
+const addUser = ({ id, name, room }) => {
   if (!name || !room) return { error: "Username and room are required." };
   
   // Check if user exists in array
@@ -17,7 +17,7 @@ exports.addUser = ({ id, name, room }) => {
   return { user };
 };
 
-exports.removeUser = (id) => {
+const removeUser = (id) => {
   const index = users.findIndex((user) => user.id === id);
   if (index !== 1) {
 
@@ -25,3 +25,13 @@ exports.removeUser = (id) => {
     return users.splice(index, 1);
   }
 };
+
+const getUser = (id) => {
+  users.find((user) => user.id === id);
+};
+
+const getUsersInRoom = (room) => {
+  users.filter((user) => user.room === room);
+};
+
+module.exports = { addUser, removeUser, getUser, getUsersInRoom };

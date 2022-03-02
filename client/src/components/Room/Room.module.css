@@ -30,6 +30,19 @@
     top: 0.75rem;
 }
 
+.userListContainer {
+
+}
+
+.userList {
+    display: flex;
+    flex-direction: column;
+}
+
+.userItem {
+    color: hsl(15, 10%, 92%);
+}
+
 .settingsInputField {
     background-color: hsl(30, 10%, 11%);
     border: 1px solid hsla(15, 10%, 92%, 0.178);

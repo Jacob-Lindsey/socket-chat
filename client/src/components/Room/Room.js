@@ -13,8 +13,9 @@ let socket;
 const Room = () => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hasPassword, setHasPassword] = useState(false);
   const [password, setPassword] = useState(null);
@@ -49,10 +50,6 @@ const Room = () => {
         setMessages(data.messages);
       });
     });
-
-    // Use this to see the current snapshot of the DB document, to avoid having the refresh the mongoDB page 
-    /* const databaseTest = fetch(window.location.search).then(res => res.json()).then(res => { console.log(res) }); */
-    
   }, [searchParams]);
 
   // Listen for socket emitter when a message is sent
@@ -60,8 +57,13 @@ const Room = () => {
     socket.on("message", (message) => {
       setMessages((messages) => [...messages, message]);
     });
+
+    socket.on("roomData", ({ users }) => {
+      setUsers(users);
+    });
   }, []);
 
+  // Scrolls to the bottom of the viewport
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -81,12 +83,12 @@ const Room = () => {
     e.preventDefault();
     if (message) {
       socket.emit("sendMessage", { message });
-      setMessage("");
-    } else alert("empty input");
+      setMessage('');
+    }
   };
 
   const handleEnterKeySubmit = (e) => {
-    if (e.key === 'Enter' && message) {
+    if (e.key === 'Enter') {
         handleSubmit(e);
     }
   };
@@ -131,6 +133,21 @@ const Room = () => {
                     aria-label="Close Menu"
                     onClick={() => setMenuOpen(false)}
                   />
+                  <div className={styles.userListContainer}>
+                    <h1>Users</h1>
+                    <div className={styles.userList}>
+                      {
+                        users ?
+                          users.map(({name}) => (
+                            <div key={name} className={styles.userItem}>
+                              {name}
+                            </div>
+                          ))
+                          :
+                          null
+                      }
+                    </div>
+                  </div>
                   ROOM SETTINGS
                   <input
                       type="text"
