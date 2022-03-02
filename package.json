@@ -1,59 +1,25 @@
 {
-  "name": "ssockchat",
-  "version": "0.1.0",
-  "engines": {
-    "node": "16.13.1"
+  "name": "socket-chat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server",
+    "setup": "npm i && cd client && npm i",
+    "dev": "concurrently \"npm run server\" \"cd client && npm start\""
   },
-  "private": true,
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^0.26.0",
     "body-parser": "^1.19.2",
+    "concurrently": "^6.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "mongoose": "^6.2.2",
-    "normalize.css": "^8.0.1",
-    "npm-run-all": "^4.1.5",
-    "path": "^0.12.7",
-    "postcss-normalize": "^10.0.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-icons": "^4.3.1",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0",
-    "socket.io": "^4.4.1",
-    "socket.io-client": "^4.4.1",
-    "unique-names-generator": "^4.7.1",
-    "uuidv4": "^6.2.12",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "start:server": "node src/server/server.js",
-    "start:client": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "express": "^4.17.1",
+    "mongoose": "^6.2.4",
+    "nodemon": "^2.0.14",
+    "socket.io": "^4.3.1"
   }
 }
