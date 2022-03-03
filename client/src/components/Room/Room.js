@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import { AiOutlineSend } from "react-icons/ai";
 import { BsPersonBadge } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoSettingsSharp } from "react-icons/io5";
 import { MdNavigateBefore } from 'react-icons/md';
 import styles from "./Room.module.css";
 
@@ -93,6 +93,10 @@ const Room = () => {
     }
   };
 
+  const userList = users ? users.map(({name}) => ( 
+    <div key={name} className={styles.userItem}>{name}</div>
+  )) : null;
+
   return (
     <main aria-label="Chat Room" className={styles.roomContainer}>
             <header aria-label={room} className={styles.header}>
@@ -115,13 +119,9 @@ const Room = () => {
                             null
                         }
                     </div>
-                    <small 
-                      className={styles.username}
-                      onClick={() => setMenuOpen(!menuOpen)}
-                    >
-                        <BsPersonBadge style={{ fontSize: "0.8rem" }} />
-                        {name}
-                    </small>
+                    <span className={styles.settings} onClick={() => setMenuOpen(!menuOpen)}>
+                        <IoSettingsSharp style={{ fontSize: "0.8rem" }} />
+                    </span>
                 </h1>
             </header>
 
@@ -135,17 +135,8 @@ const Room = () => {
                   />
                   <div className={styles.userListContainer}>
                     <h1>Users</h1>
-                    <div className={styles.userList}>
-                      {
-                        users ?
-                          users.map(({name}) => (
-                            <div key={name} className={styles.userItem}>
-                              {name}
-                            </div>
-                          ))
-                          :
-                          null
-                      }
+                    <div className={`${styles.userList} ${styles.isMobile}`}>
+                      {userList}
                     </div>
                   </div>
                   ROOM SETTINGS
@@ -161,7 +152,7 @@ const Room = () => {
                 null
             }
             
-            <section className={styles.messagesContainer}>
+            <section className={styles.chatContainer}>
                 <ol className={styles.messagesList}>
                     {messages.map((message, index) => (
                         <li 
@@ -186,6 +177,9 @@ const Room = () => {
                     ))}
                     <div className={styles.messagesEnd} ref={messagesEndRef} />
                 </ol>
+                <div className={`${styles.userList} ${styles.isDesktop}`}>
+                  {userList}
+                </div>
             </section>
             <footer aria-label="Chat Room Input" className={styles.footer}>
                 <form 
