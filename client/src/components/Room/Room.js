@@ -6,7 +6,9 @@ import { BsPersonBadge } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 import { IoClose, IoSettingsSharp } from "react-icons/io5";
 import { MdNavigateBefore } from 'react-icons/md';
+import TypingStatus from "../TypingStatus/TypingStatus";
 import styles from "./Room.module.css";
+import { set } from "express/lib/response";
 
 let socket;
 
@@ -17,6 +19,7 @@ const Room = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [typingMessage, setTypingMessage] = useState(null);
   const [hasPassword, setHasPassword] = useState(false);
   const [password, setPassword] = useState(null);
 
@@ -63,6 +66,29 @@ const Room = () => {
     });
   }, []);
 
+  useEffect(() => {
+    let typingTimer = null;
+    socket.on("typing", (data) => {
+      clearTimeout(typingTimer);
+      if (data.length === 1) {
+        setTypingMessage(`${data[0].name} is typing...`);
+        typingTimer = setTimeout(() => {
+          setTypingMessage(null);
+        }, 2000);
+      } else if (data.length > 1) {
+        setTypingMessage(`${data.length} people are typing...`);
+      }
+      
+      return () => {
+        clearTimeout(typingTimer);
+      }
+    });
+
+    socket.on("stoppedTyping", () => {
+      setTypingMessage(null);
+    });
+  });
+
   // Scrolls to the bottom of the viewport
   useEffect(() => {
     scrollToBottom();
@@ -91,6 +117,13 @@ const Room = () => {
     if (e.key === 'Enter') {
         handleSubmit(e);
     }
+  };
+
+  const handleTypingStatus = (e) => {
+    socket.emit("typing");
+    if (e.target.value === '') {
+      socket.emit('stoppedTyping');
+    };
   };
 
   const userList = users ? users.map(({name}) => ( 
@@ -128,25 +161,29 @@ const Room = () => {
             {
               menuOpen ?
                 <section className={styles.menuContainer}>
-                  <IoClose 
-                    className={styles.menuClose}
-                    aria-label="Close Menu"
-                    onClick={() => setMenuOpen(false)}
-                  />
-                  <div className={styles.userListContainer}>
-                    <h1>Users</h1>
-                    <div className={`${styles.userList} ${styles.isMobile}`}>
-                      {userList}
+                  <div className={styles.menuInnerContainer}>
+                    <IoClose 
+                      className={styles.menuClose}
+                      aria-label="Close Menu"
+                      onClick={() => setMenuOpen(false)}
+                    />
+                    <div className={`${styles.userListContainer} ${styles.isMobile}`}>
+                      <h1 className={styles.hashMark}>#{room}</h1>
+                      <strong>USERS</strong>
+                      <div className={`${styles.userList} ${styles.isMobile}`}>
+                        {userList}
+                      </div>
                     </div>
+                    ROOM SETTINGS
+                    <input
+                        type="text"
+                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                        placeholder="Set Password"
+                        className={styles.settingsInputField}
+                        autoComplete="off"
+                    />
                   </div>
-                  ROOM SETTINGS
-                  <input
-                      type="text"
-                      onChange={(e) => setPassword(e.target.value)}
-                      name="password"
-                      placeholder="Set Password"
-                      className={styles.settingsInputField}
-                  />
                 </section>
                 :
                 null
@@ -182,6 +219,7 @@ const Room = () => {
                 </div>
             </section>
             <footer aria-label="Chat Room Input" className={styles.footer}>
+                <span>{typingMessage}</span>
                 <form 
                   action=""
                   className={styles.messageInputContainer}
@@ -193,8 +231,10 @@ const Room = () => {
                       onChange={(e) => setMessage(e.target.value)}
                       name="chatInput"
                       onKeyDown={(e) => handleEnterKeySubmit(e)}
+                      onKeyUp={(e) => handleTypingStatus(e)}
                       placeholder="Write message..."
                       className={styles.messageInputField}
+                      autoComplete="off"
                   />
                   {message ? 
                       <button

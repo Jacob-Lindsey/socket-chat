@@ -16,7 +16,15 @@ const io = require("socket.io")(server, {
     credentials: true,
   },
 });
-const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
+
+const { 
+  addUser, 
+  removeUser, 
+  getUser, 
+  getUsersInRoom, 
+  addTypingUser, 
+  removeTypingUser 
+} = require("./users");
 const res = require("express/lib/response");
 
 const DB_STRING = "mongodb+srv://pantzzzz:jakejake@cluster0.bjfcc.mongodb.net/ssockchat?retryWrites=true&w=majority";
@@ -107,6 +115,17 @@ io.on("connection", (socket) => {
         });      
   
       io.to(user.room).emit("message", newMessage );
+    });
+
+    // Alert room when a user is typing
+    socket.on("typing", () => {
+      const typingUsers = addTypingUser(socket.id, user.name);
+      socket.broadcast.to(user.room).emit("typing", typingUsers);
+    });
+
+    socket.on("stoppedTyping", () => {
+      const typingUsers = removeTypingUser(socket.id);
+      socket.broadcast.to(user.room).emit("stoppedTyping", typingUsers);
     });
   });
 

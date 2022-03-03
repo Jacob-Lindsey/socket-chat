@@ -1,4 +1,5 @@
 let users = [];
+let typing = [];
 
 const addUser = ({ id, name, room }) => {
 
@@ -25,4 +26,29 @@ const getUser = (id) => users.find((user) => user.id === id);
 
 const getUsersInRoom = (room) => users.filter((user) => user.room === room);
 
-module.exports = { addUser, removeUser, getUser, getUsersInRoom };
+const addTypingUser = (id, name) => {
+  const userTypingExist = typing.find((user) => {
+    return user.id === id;
+  });
+
+  if (!userTypingExist) {
+    typing.push({id: id, name: name});
+  };
+
+  return typing;
+};
+
+const removeTypingUser = (id) => {
+  const index = typing.findIndex((user) => user.id === id);
+
+  if (index !== -1) return typing.splice(index, 1)[0];
+};
+
+module.exports = { 
+  addUser, 
+  removeUser, 
+  getUser, 
+  getUsersInRoom, 
+  addTypingUser, 
+  removeTypingUser 
+};
