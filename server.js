@@ -79,33 +79,25 @@ app.get('/chat', async (req, res, next) => {
 });
 
 io.on("connection", (socket) => {
-  
-  // When a user joins a room
-  socket.on("join", ({ name, room }) => {
+  socket.on("join", ({ name, room }, callback) => {
     const { user, error } = addUser({ id: socket.id, name, room });
 
     if (error) return callback(error);
 
     socket.join(user.room);
 
-    socket.emit("message", {
-      user: "Admin",
-      text: `Welcome to ${user.room}`,
-    });
-
+    socket.emit("message", { user: "Admin", text: `Welcome to ${user.room}` });
     socket.broadcast.to(user.room).emit("message", { user: "Admin", text: `${user.name} has joined!` });
 
-    io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+    io.to(user.room).emit('roomData', { users: getUsersInRoom(user.room) });
     
     // When a user sends a new message
     socket.on("sendMessage", ({ message }) => {
-  
       const timestamp = new Date(Date.now()).toLocaleTimeString("en-US");
-  
       const newMessage = {
         user: user.name,
         text: message,
-        timestamp: timestamp,
+        timestamp: timestamp,   
       };
   
       Room.findOne({ name: room })

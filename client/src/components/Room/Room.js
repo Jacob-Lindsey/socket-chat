@@ -13,7 +13,7 @@ let socket;
 const Room = () => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
-  const [users, setUsers] = useState("");
+  const [users, setUsers] = useState();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
