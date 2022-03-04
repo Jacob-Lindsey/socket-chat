@@ -1,0 +1,73 @@
+.messageItem {
+    align-items: flex-start;
+    border-radius: 0.3em;
+    display: flex;
+    flex-direction: column;
+    margin: 1.75rem 0;
+    max-width: 80%;
+    padding: 0.5rem 0.25rem 0 0.25rem;
+}
+
+.myMessage {
+    align-self: start;
+    background-color: hsl(115, 62%, 45%);
+    color: #222;
+}
+
+.recievedMessage {
+    align-self: end;
+    background-color: hsl(300, 83%, 27%);
+}
+
+.adminMessage {
+    align-items: center;
+    font-size: 0.9rem;
+    font-style: italic;
+    font-weight: 300;
+    margin: 0.25rem auto;
+    width: 100%;
+}
+
+.adminMessage p {
+    margin: 0;
+    word-break: normal;
+}
+
+.adminMessage .messageDetails {
+    display: none;
+}
+
+.messageText {
+    font-size: 1em;
+    line-height: 1.2em;
+    margin: 0 0 12px 0;
+    padding: 0.25rem 0.5rem;
+    text-align: left;
+    word-break: break-word;
+}
+
+.messageDetails {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.messageSender {
+    font-size: 0.75em;
+    font-weight: 400;
+    padding: 0 0 0.25rem 0.5rem;
+    font-style: italic;
+}
+
+.messageTimestamp {
+    font-size: 0.75em;
+    font-weight: 400;
+    padding: 0 0.5rem 0.25rem 0;
+}
+
+@media screen and (min-width: 1024px) {
+    .messageItem {
+        padding: 1rem 0.5rem 0.5rem 0.5rem;
+    }
+}

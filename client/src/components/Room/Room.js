@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import io from "socket.io-client";
-import { AiOutlineSend } from "react-icons/ai";
-import { HiLockClosed } from "react-icons/hi";
-import { IoClose, IoSettingsSharp } from "react-icons/io5";
-import { MdNavigateBefore } from 'react-icons/md';
+import ChatContainer from "../ChatContainer/ChatContainer";
+import ChatInput from "../ChatInput/ChatInput";
 import Menu from "../Menu/Menu";
-import TypingDots from "../TypingDots/TypingDots";
+import RoomHeader from "../RoomHeader/RoomHeader";
+import { fetchData } from "../../helpers/fetchData";
+import { scrollToBottom } from "../../helpers/scrollToBottom";
 import styles from "./Room.module.css";
 
 let socket;
@@ -32,8 +32,7 @@ const Room = () => {
   // PRODUCTION URL
   /* const ENDPOINT = window.location.hostname; */
 
-  // Instantiate new room if not found in the DB 
-  // Else create a new one and add it to DB
+  // Instantiate/create new room
   useEffect(() => {
     const name = searchParams.get('name');
     const room = searchParams.get('room');  
@@ -46,12 +45,7 @@ const Room = () => {
         alert(error);
       }
     });
-
-    fetch(window.location.search).then(data => {
-      data.json().then((data) => {
-        setMessages(data.messages);
-      });
-    });
+    fetchData(setMessages);
   }, [searchParams]);
 
   // Listen for socket emitter when a message is sent
@@ -65,6 +59,7 @@ const Room = () => {
     });
   }, []);
 
+  // Displays a notification if a user is typing, with a 2 second delay after last input
   useEffect(() => {
     let typingTimer = null;
     socket.on("typing", (data) => {
@@ -93,39 +88,13 @@ const Room = () => {
 
   // Scrolls to the bottom of the viewport
   useEffect(() => {
-    scrollToBottom();
+    scrollToBottom(messagesEndRef);
   }, [messages]);
 
+  // Routes to the most recent history location 
   const navigate = useNavigate();
-
   const handleNavigate = () => {
     navigate(-1)
-  };
-
-  // Uses a 'dummy' div at the bottom of the viewport to scroll to on page load, or when a new message is recieved
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (message) {
-      socket.emit("sendMessage", { message });
-      setMessage('');
-    }
-  };
-
-  const handleEnterKeySubmit = (e) => {
-    if (e.key === 'Enter') {
-        handleSubmit(e);
-    }
-  };
-
-  const handleTypingStatus = (e) => {
-    socket.emit("typing");
-    if (e.target.value === '') {
-      socket.emit('stoppedTyping');
-    };
   };
 
   const userList = users ? users.map(({name}) => ( 
@@ -134,32 +103,13 @@ const Room = () => {
 
   return (
     <main aria-label="Chat Room" className={styles.roomContainer}>
-            <header aria-label={room} className={styles.header}>
-                <MdNavigateBefore
-                    style={{ cursor: "pointer", fontSize: "1.6rem" }}
-                    aria-label="Navigate Back"
-                    onClick={() => handleNavigate()} 
-                />
-                <h1 className={styles.roomName}>
-                    <div>
-                        <span className={styles.hashMark}>#</span>
-                        {room}
-                        {
-                            hasPassword ?
-                                <HiLockClosed 
-                                    style={{ color: "hsla(137, 100%, 39%, 1)",  fontSize: "1.3rem", margin: "0 0.5rem" }}
-                                    aria-label="Room Is Password Protected"
-                                />
-                            :
-                            null
-                        }
-                    </div>
-                    <span className={styles.settings} onClick={() => setMenuOpen(!menuOpen)}>
-                        <IoSettingsSharp style={{ fontSize: "0.8rem" }} />
-                    </span>
-                </h1>
-            </header>
-
+            <RoomHeader 
+              handleNavigate={handleNavigate}
+              setMenuOpen={setMenuOpen}
+              menuOpen={menuOpen}
+              room={room}
+              hasPassword={hasPassword}
+            />
             {
               menuOpen ?
                 <Menu 
@@ -171,73 +121,18 @@ const Room = () => {
                 :
                 null
             }
-            
-            <section className={styles.chatContainer}>
-                <ol className={styles.messagesList}>
-                    {messages.map((message, index) => (
-                        <li 
-                            key={index}
-                            className={
-                              `${styles.messageItem}
-                               ${message.user === name ? styles.myMessage 
-                                  : message.user === 'Admin'
-                                  ? styles.adminMessage
-                                  : styles.recievedMessage
-                                }`}
-                            >
-                            <p className={styles.messageText}>
-                                {message.text}
-                            </p>
-                            <span className={styles.messageDetails}>
-                                <small className={styles.messageSender}>{message.user}</small>
-                                <small className={styles.messageTimestamp}>{message.timestamp}</small>
-                            </span>
-                            
-                        </li>
-                    ))}
-                    <div className={styles.messagesEnd} ref={messagesEndRef} />
-                </ol>
-                <div className={`${styles.userList} ${styles.isDesktop}`}>
-                  {userList}
-                </div>
-            </section>
-            <footer aria-label="Chat Room Input" className={styles.footer}>
-                {typingMessage ? 
-                  <span className={styles.typingMessage}>
-                    <TypingDots />
-                    {typingMessage}
-                  </span> 
-                  : 
-                  null
-                }
-                <form 
-                  action=""
-                  className={styles.messageInputContainer}
-                  onSubmit={handleSubmit}
-                >
-                  <input
-                      type="text"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      name="chatInput"
-                      onKeyDown={(e) => handleEnterKeySubmit(e)}
-                      onKeyUp={(e) => handleTypingStatus(e)}
-                      placeholder="Write message..."
-                      className={styles.messageInputField}
-                      autoComplete="off"
-                  />
-                  {message ? 
-                      <button
-                      type="submit" 
-                      className={styles.sendMessageButton}
-                      >
-                          <AiOutlineSend />
-                      </button>
-                          :
-                      null
-                  }
-                </form>
-            </footer>
+            <ChatContainer 
+              messages={messages}
+              messagesEndRef={messagesEndRef}
+              name={name}
+              userList={userList}
+            />
+            <ChatInput
+              setMessage={setMessage}
+              message={message}
+              socket={socket}
+              typingMessage={typingMessage}
+            />
         </main>
   );
 };

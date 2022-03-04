@@ -9,7 +9,6 @@ const TypingDots = () => {
             <div className={styles.dot}></div>
         </div>
     )
-
 };
 
 export default TypingDots;

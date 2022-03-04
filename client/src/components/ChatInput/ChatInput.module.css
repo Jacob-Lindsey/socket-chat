@@ -1,0 +1,52 @@
+.footer {
+    background-color: hsl(30, 10%, 11%);
+    bottom: 0;
+    opacity: 0.97;
+    padding: 0 0.75rem 0.75rem 0.75rem;
+    position: fixed;
+    width: 100%;
+}
+
+.typingMessage {
+    align-items: center;
+    display: flex;
+}
+
+.messageInputContainer {
+    display: inline-flex;
+    position: relative;
+    width: 100%;
+}
+
+.messageInputField {
+    background-color: hsl(30, 10%, 11%);
+    border: 1px solid hsla(15, 10%, 92%, 0.178);
+    border-radius: 0.3em;
+    color: hsl(15, 10%, 92%);
+    padding: 0.5rem 4.5rem 0.5rem 0.5rem;
+    width: 100%;
+}
+
+.sendMessageButton {
+    align-items: center;
+    background-color: transparent;
+    border: 0;
+    color: hsl(214, 90%, 62%);
+    cursor: pointer;
+    display: flex;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    transition: color 0.2s ease;
+}
+
+.sendMessageButton:hover {
+    color: hsl(204, 97%, 69%);
+}
+
+.messageInputField:focus-visible,
+.settingsInputField:focus-visible {
+    outline: none;
+}
+
