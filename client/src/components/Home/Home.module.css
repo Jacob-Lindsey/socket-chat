@@ -1,9 +1,5 @@
 .container {
-    padding-top: 5rem;
-}
-
-.sectionHeader {
-    color: hsl(15, 10%, 92%);
+    padding-top: 3.5rem;
 }
 
 .roomNameInput {
@@ -22,7 +18,6 @@
     font-weight: 300;
     padding: 1rem;
 }
-
 
 .enterRoomButton {
     background-color: transparent;
