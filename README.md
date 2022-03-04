@@ -8,8 +8,9 @@
 - [x] Allow the room's creator/admins to enable chat persistence, otherwise it will only exist on a session-basis
 - [x] Allow the room's creator/admins to enable a list of the room's current usernames
 - [ ] Allow a user to select which color their chat bubbles will be (Maybe globally and/or per room?)
+- [x] Notify the room when one or more users are currently typing
 - [ ] Allow the app to be run on a mobile device as a native app (Web frame?)
-- [ ] Move the node server process to a publicly accessible provider
+~~- [ ] Move the node server process to a publicly accessible provider~~ May not be needed
 
 ## SockChat Server
 
