@@ -206,6 +206,11 @@
     width: 100%;
 }
 
+.typingMessage {
+    align-items: center;
+    display: flex;
+}
+
 .messageInputContainer {
     display: inline-flex;
     position: relative;

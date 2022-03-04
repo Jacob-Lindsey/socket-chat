@@ -2,13 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import io from "socket.io-client";
 import { AiOutlineSend } from "react-icons/ai";
-import { BsPersonBadge } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 import { IoClose, IoSettingsSharp } from "react-icons/io5";
 import { MdNavigateBefore } from 'react-icons/md';
-import TypingStatus from "../TypingStatus/TypingStatus";
+import Menu from "../Menu/Menu";
+import TypingDots from "../TypingDots/TypingDots";
 import styles from "./Room.module.css";
-import { set } from "express/lib/response";
 
 let socket;
 
@@ -77,16 +76,19 @@ const Room = () => {
         }, 2000);
       } else if (data.length > 1) {
         setTypingMessage(`${data.length} people are typing...`);
-      }
-      
-      return () => {
-        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => {
+          setTypingMessage(null);
+        }, 2000);
       }
     });
 
     socket.on("stoppedTyping", () => {
       setTypingMessage(null);
     });
+
+    return () => {
+      clearTimeout(typingTimer);
+    }
   });
 
   // Scrolls to the bottom of the viewport
@@ -160,31 +162,12 @@ const Room = () => {
 
             {
               menuOpen ?
-                <section className={styles.menuContainer}>
-                  <div className={styles.menuInnerContainer}>
-                    <IoClose 
-                      className={styles.menuClose}
-                      aria-label="Close Menu"
-                      onClick={() => setMenuOpen(false)}
-                    />
-                    <div className={`${styles.userListContainer} ${styles.isMobile}`}>
-                      <h1 className={styles.hashMark}>#{room}</h1>
-                      <strong>USERS</strong>
-                      <div className={`${styles.userList} ${styles.isMobile}`}>
-                        {userList}
-                      </div>
-                    </div>
-                    ROOM SETTINGS
-                    <input
-                        type="text"
-                        onChange={(e) => setPassword(e.target.value)}
-                        name="password"
-                        placeholder="Set Password"
-                        className={styles.settingsInputField}
-                        autoComplete="off"
-                    />
-                  </div>
-                </section>
+                <Menu 
+                  setMenuOpen={setMenuOpen}
+                  setPassword={setPassword}
+                  room={room}
+                  userList={userList}
+                />
                 :
                 null
             }
@@ -219,7 +202,14 @@ const Room = () => {
                 </div>
             </section>
             <footer aria-label="Chat Room Input" className={styles.footer}>
-                <span>{typingMessage}</span>
+                {typingMessage ? 
+                  <span className={styles.typingMessage}>
+                    <TypingDots />
+                    {typingMessage}
+                  </span> 
+                  : 
+                  null
+                }
                 <form 
                   action=""
                   className={styles.messageInputContainer}
