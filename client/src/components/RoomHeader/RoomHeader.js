@@ -14,8 +14,8 @@ const RoomHeader = (props) => {
     return (
         <header aria-label={room} className={styles.header}>
             <MdNavigateBefore
-                style={{ cursor: "pointer", fontSize: "1.6rem" }}
                 aria-label="Navigate Back"
+                className={styles.backArrow}
                 onClick={() => handleNavigate()} 
             />
             <h1 className={styles.roomName}>
@@ -33,7 +33,12 @@ const RoomHeader = (props) => {
                     }
                 </div>
                 <span className={styles.settings} onClick={() => setMenuOpen(!menuOpen)}>
-                    <IoSettingsSharp style={{ fontSize: "0.8rem" }} />
+                    <IoSettingsSharp
+                        aria-expanded={menuOpen}
+                        aria-label="Toggle menu"
+                        className={styles.settingsIcon}
+                        style={{ fontSize: "0.8rem" }} 
+                    />
                 </span>
             </h1>
         </header>

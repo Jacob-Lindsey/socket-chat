@@ -22,6 +22,12 @@
     --secondary-700: hsl(214, 100%, 20%);
     --secondary-800: hsl(214, 100%, 16%);
     --secondary-900: hsl(214, 100%, 12%);
+
+    --background-lightest: hsl(30, 10%, 18%);
+    --background-lighter: hsl(30, 10%, 13%);
+    --background-default: hsl(30, 10%, 11%);
+    --background-darker: hsl(30, 10%, 8%);
+    --background-darkest: hsl(30, 10%, 4%);
     
     --accent-100: hsl(300, 37%, 47%);
     --accent-200: hsl(300, 37%, 43%);

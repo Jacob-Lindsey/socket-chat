@@ -1,10 +1,10 @@
 .userItem {
     align-items: center;
-    
+    background-color: var(--background-lighter);
+    border-bottom: 1px solid var(--background-lightest);
     color: hsl(15, 10%, 92%);
     display: flex;
-    padding: 0.25rem 1rem;
-    text-indent: 0.75rem;
+    padding: 0.5rem 1rem 0.75rem 1rem;
 }
 
 .roomContainer {
@@ -16,7 +16,10 @@
 
 @media screen and (min-width: 768px) {
     .userItem {
+        background-color: inherit;
         border-bottom: 1px solid hsl(20, 13%, 19%);
+        padding: 0.25rem 1rem;
+        text-indent: 0.75rem;
     }
 
     .userItem:hover {

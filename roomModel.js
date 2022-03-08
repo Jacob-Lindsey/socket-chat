@@ -18,6 +18,7 @@ const RoomSchema = new Schema({
     users: { type: Array },
     hasPassword: { type: Boolean, default: false },
     password: { type: String, default: "" },
+    persistent: { type: Boolean, default: false },
     creator: { type: String },
     admins: { type: Array },
     mods: { type: Array },

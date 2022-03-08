@@ -6,6 +6,9 @@ const app = express();
 const bodyParser = require("body-parser");
 const server = http.createServer(app);
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 const Room = require("./roomModel");
 
 const io = require("socket.io")(server, {
@@ -60,6 +63,7 @@ app.get('/', (req, res, next) => res.sendFile(__dirname + './index.html'), funct
 app.get('/chat', async (req, res, next) => {
   const name = req.query.name;
   const room = req.query.room;
+  const persistent = req.query.per;
 
   Room.findOne({ name: room })
     .then(foundRoom => {
@@ -70,6 +74,7 @@ app.get('/chat', async (req, res, next) => {
           users: [name],
           hasPassword: false,
           password: null,
+          persistent: persistent,
           creator: name,
           admins: [name],
           mods: [name],
@@ -86,6 +91,15 @@ app.get('/chat', async (req, res, next) => {
     });
 });
 
+app.post('/chat', async (req, res, next) => {
+  const room = req.query.room;
+  
+  Room.findOneAndUpdate({ name: room }, req.body, function(err, doc) {
+    if (err) return res.send(500, {error: err});
+    return res.send('Room updated');
+  })
+});
+
 io.on("connection", (socket) => {
   socket.on("join", ({ name, room }, callback) => {
     const { user, error } = addUser({ id: socket.id, name, room });
@@ -99,7 +113,7 @@ io.on("connection", (socket) => {
 
     io.to(user.room).emit('roomData', { users: getUsersInRoom(user.room) });
     
-    // When a user sends a new message
+    // When a user sends a message, save to DB only if room is marked 'persistent'
     socket.on("sendMessage", ({ message }) => {
       const timestamp = new Date(Date.now()).toLocaleTimeString("en-US");
       const newMessage = {
@@ -110,8 +124,10 @@ io.on("connection", (socket) => {
   
       Room.findOne({ name: room })
         .then(foundRoom => {
-          foundRoom.messages.push(newMessage);
-          foundRoom.save();
+          if (foundRoom.persistent) {
+            foundRoom.messages.push(newMessage);
+            foundRoom.save();
+          }
         });      
   
       io.to(user.room).emit("message", newMessage );

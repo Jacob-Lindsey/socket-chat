@@ -34,11 +34,57 @@
     background-color: hsla(212, 81%, 61%, 0.192);
 }
 
+.optionsWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+}
+
 .options {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1.5rem 3rem 2rem 3rem;
+    margin-top: 1rem;
+}
+
+.options label {
+    display: flex;
+}
+
+.options label span {
+    align-items: center;
+    display: flex;
+}
+
+.info {
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin: 0 0.5rem 0 0.35rem;
+    position: relative;
+}
+
+.tooltip {
+    background-color: var(--background-lighter);
+    border: 1px solid var(--background-lightest);
+    border-radius: 4px;
+    -webkit-box-shadow: 2px 2px 15px 0px rgba(0,0,0,0.62); 
+    box-shadow: 2px 2px 15px 0px rgba(0,0,0,0.62);
+    color: hsl(15, 10%, 92%);
+    font-size: 0.8rem;
+    opacity: 0;
+    padding: 1rem 0.75rem;
+    position: absolute;
+    right: 10%;
+    text-align: center;
+    top: 17%;
+    transition: all 0.2s ease;
+    width: 300px;
+    z-index: 9999;
+}
+
+.info:hover + .tooltip {
+    opacity: 1;
 }
 
 .passwordLabel {
@@ -56,6 +102,7 @@
         flex-direction: row;
         gap: 1rem;
         justify-content: flex-start;
+        width: 100%;
     }
 
     .inputField, .enterRoomButton {
@@ -66,10 +113,19 @@
         margin-top: 0;
     }
 
+    .optionsWrapper {
+        display: flex;
+        flex-direction: row;
+        gap: 15%;
+        justify-content: flex-start;
+        width: 100%;
+    }
+    
     .options {
         align-items: center;
         flex-direction: row;
-        gap: 1.4rem;
+        gap: 0.2rem;
+        margin-top: 0;
         padding: 0;
     }
 }
