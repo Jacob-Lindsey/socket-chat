@@ -50,6 +50,7 @@
 
 .options label {
     display: flex;
+    position: relative;
 }
 
 .options label span {
@@ -77,9 +78,9 @@
     opacity: 0;
     padding: 1rem 0.75rem;
     position: absolute;
-    right: 10%;
+    left: 0rem;
     text-align: center;
-    top: 17%;
+    top: 2.5rem;
     transition: all 0.2s ease;
     width: 300px;
     z-index: 9999;
@@ -135,5 +136,12 @@
         gap: 0.2rem;
         margin-top: 0;
         padding: 0;
+    }
+}
+
+@media screen and (min-width: 1220px) {
+    .roomNameInput {
+        margin: 0 auto;
+        max-width: 1200px;
     }
 }

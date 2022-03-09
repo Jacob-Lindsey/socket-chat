@@ -28,10 +28,10 @@ const Room = () => {
   const [searchParams] = useSearchParams();
 
   // DEVELOPMENT URL
-  /* const ENDPOINT = "http://localhost:5000"; */
+  const ENDPOINT = "http://localhost:5000";
 
   // PRODUCTION URL
-  const ENDPOINT = window.location.hostname;
+/*   const ENDPOINT = window.location.hostname; */
 
   // Instantiate/create new room
   useEffect(() => {
@@ -47,7 +47,7 @@ const Room = () => {
       }
     });
     fetchData(setMessages, setPersistent);
-  }, [searchParams, ENDPOINT]);
+  }, [searchParams]);
 
   // Listen for socket emitter when a message is sent
   useEffect(() => {
