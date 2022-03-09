@@ -45,13 +45,13 @@ const PORT = process.env.PORT || 5000;
 
 // ------------------------------------------------------------------
 // DEVELOPMENT
-app.use(express.static(path.join(__dirname, '../public')));
-process.env.DEBUG="*";
+/* app.use(express.static(path.join(__dirname, '../public')));
+process.env.DEBUG="*"; */
 // ------------------------------------------------------------------
 
 // ------------------------------------------------------------------
 // PRODUCTION
-/* app.use(express.static(path.join(__dirname, '../build'))); */
+app.use(express.static(path.join(__dirname, '../build')));
 // ------------------------------------------------------------------
 
 app.get('/', (req, res, next) => res.sendFile(__dirname + './index.html'), function(err) {
