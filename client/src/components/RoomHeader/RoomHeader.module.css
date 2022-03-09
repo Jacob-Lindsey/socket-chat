@@ -37,6 +37,13 @@
     font-weight: 300;
 }
 
+.roomStatus {
+    color: hsl(137, 53%, 44%);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
 .settings {
     align-items: center;
     display: flex;
@@ -62,12 +69,12 @@
 }
 
 @media screen and (min-width: 768px) {
-    .header{
+    .header {
         padding: 1rem;
     }
 
     .roomName {
-        font-size: 1.75rem;
+        font-size: 1.6rem;
         padding: 0 1.5rem 0 3rem;
     }
     

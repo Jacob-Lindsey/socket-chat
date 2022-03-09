@@ -48,6 +48,7 @@ const Home = () => {
                   />
                   <span className={styles.tooltip}>
                     Rooms with persistent messages enabled will be preserved for future visits. Leave this setting disabled if you wish your conversations to disappear when you are done.
+                    <span className={styles.tooltipFooter}>(Only applies to newly created rooms)</span>
                   </span>
                 </span>
                 <ToggleSwitch 

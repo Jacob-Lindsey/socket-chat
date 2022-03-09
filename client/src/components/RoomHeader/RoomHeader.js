@@ -1,6 +1,6 @@
 import { MdNavigateBefore } from "react-icons/md";
 import { HiLockClosed } from "react-icons/hi";
-import { IoSettingsSharp } from "react-icons/io5";
+import { IoAlertCircleOutline, IoSettingsSharp } from "react-icons/io5";
 import styles from "./RoomHeader.module.css";
 
 const RoomHeader = (props) => {
@@ -9,6 +9,7 @@ const RoomHeader = (props) => {
     const setMenuOpen = props.setMenuOpen;
     const menuOpen = props.menuOpen;
     const room = props.room;
+    const persistent = props.persistent;
     const hasPassword = props.hasPassword;
 
     return (
@@ -26,8 +27,20 @@ const RoomHeader = (props) => {
                         hasPassword ?
                             <HiLockClosed 
                                 style={{ color: "hsla(137, 100%, 39%, 1)",  fontSize: "1.3rem", margin: "0 0.5rem" }}
-                                aria-label="Room Is Password Protected"
+                                aria-label="Room is password protected"
                             />
+                        :
+                        null
+                    }
+                    {
+                        persistent ?
+                            <>
+                                <IoAlertCircleOutline 
+                                    style={{ color: "hsl(137, 53%, 44%)",  fontSize: "1.3rem", margin: "0 0.4rem 0 1.5rem" }}
+                                    aria-label="Conversations in this room will be saved for future visits"
+                                />
+                                <span className={styles.roomStatus}>Chat logging enabled</span>
+                            </>
                         :
                         null
                     }

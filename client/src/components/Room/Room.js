@@ -14,12 +14,12 @@ let socket;
 const Room = () => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
-  const [roomData, setRoomData] = useState();
   const [users, setUsers] = useState();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [typingMessage, setTypingMessage] = useState(null);
+  const [persistent, setPersistent] = useState(false);
   const [hasPassword, setHasPassword] = useState(false);
   const [password, setPassword] = useState(null);
 
@@ -46,7 +46,7 @@ const Room = () => {
         alert(error);
       }
     });
-    fetchData(setMessages, setRoomData);
+    fetchData(setMessages, setPersistent);
   }, [searchParams]);
 
   // Listen for socket emitter when a message is sent
@@ -109,6 +109,7 @@ const Room = () => {
               setMenuOpen={setMenuOpen}
               menuOpen={menuOpen}
               room={room}
+              persistent={persistent}
               hasPassword={hasPassword}
             />
             {

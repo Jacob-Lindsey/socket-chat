@@ -82,7 +82,7 @@ app.get('/chat', async (req, res, next) => {
         newRoom.save();
         res.json(newRoom);
       } else {
-        if (!foundRoom.users.includes(name)) {
+        if (!foundRoom.users.includes(name) && foundRoom.persistent) {
           foundRoom.users.push(name);
           foundRoom.save();
         }

@@ -71,7 +71,9 @@
     -webkit-box-shadow: 2px 2px 15px 0px rgba(0,0,0,0.62); 
     box-shadow: 2px 2px 15px 0px rgba(0,0,0,0.62);
     color: hsl(15, 10%, 92%);
-    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75rem;
     opacity: 0;
     padding: 1rem 0.75rem;
     position: absolute;
@@ -81,6 +83,12 @@
     transition: all 0.2s ease;
     width: 300px;
     z-index: 9999;
+}
+
+.tooltipFooter {
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding-top: 0.5rem;
 }
 
 .info:hover + .tooltip {
